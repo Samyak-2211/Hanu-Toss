@@ -1,0 +1,628 @@
+/* =========================================================
+   HANUMAN JI TOSS — hstyle.css
+   Sections:
+   1. Variables & Reset
+   2. Background Layers
+   3. Header
+   4. Hero / Deity
+   5. Coin
+   6. Toss Button
+   7. Result Card
+   8. Statistics
+   9. Footer
+   10. Animations & Keyframes
+   11. Responsive
+   12. Reduced Motion
+   ========================================================= */
+
+/* ---------- 1. VARIABLES & RESET ---------- */
+:root {
+  --bg-black: #0a0705;
+  --bg-black-2: #150c08;
+  --stone: #1c130d;
+  --crimson: #6e1220;
+  --crimson-deep: #45090f;
+  --saffron: #ff8c1a;
+  --saffron-soft: #ffb15c;
+  --gold: #e8b23d;
+  --gold-bright: #ffd77a;
+  --gold-deep: #8a5a12;
+  --ivory: #f5ead9;
+  --ivory-dim: #cfc2ac;
+  --line-gold: rgba(232, 178, 61, 0.35);
+
+  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-body: 'Mukta', 'Segoe UI', sans-serif;
+
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-black);
+  color: var(--ivory);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--crimson);
+  color: var(--ivory);
+}
+
+/* ---------- 2. BACKGROUND LAYERS ---------- */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg-stone {
+  background:
+    radial-gradient(ellipse at 50% 0%, #241710 0%, var(--bg-black) 55%),
+    linear-gradient(180deg, var(--bg-black) 0%, var(--bg-black-2) 100%);
+}
+
+.bg-mandala {
+  background-image:
+    repeating-radial-gradient(circle at 50% 18%, rgba(232, 178, 61, 0.05) 0px, rgba(232, 178, 61, 0.05) 1px, transparent 2px, transparent 46px),
+    repeating-conic-gradient(from 0deg at 50% 18%, rgba(232, 178, 61, 0.035) 0deg 4deg, transparent 4deg 20deg);
+  mask-image: radial-gradient(ellipse 70% 55% at 50% 20%, black 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 20%, black 20%, transparent 75%);
+  opacity: 0.8;
+}
+
+.bg-vignette {
+  background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.75) 100%);
+}
+
+#particle-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+.light-rays {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.35;
+}
+
+.light-rays span {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  width: 2px;
+  height: 140%;
+  background: linear-gradient(180deg, rgba(255, 209, 122, 0.5), transparent 70%);
+  transform-origin: top center;
+  animation: rayDrift 14s ease-in-out infinite;
+}
+.light-rays span:nth-child(1) { transform: rotate(-18deg) translateX(-220px); animation-delay: 0s; }
+.light-rays span:nth-child(2) { transform: rotate(-6deg) translateX(-80px); animation-delay: 2.5s; }
+.light-rays span:nth-child(3) { transform: rotate(8deg) translateX(90px); animation-delay: 5s; }
+.light-rays span:nth-child(4) { transform: rotate(20deg) translateX(230px); animation-delay: 7.5s; }
+
+/* ---------- 3. HEADER ---------- */
+.site-header {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.75rem 1rem 0;
+}
+
+.site-header .mark { display: none; }
+
+.mark-text {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--gold);
+  letter-spacing: 0.3em;
+  opacity: 0.75;
+}
+
+/* ---------- 4. HERO / DEITY ---------- */
+main { position: relative; z-index: 3; }
+
+.hero {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 1.5rem 1.25rem 2rem;
+}
+
+.deity-frame {
+  position: relative;
+  width: min(78vw, 340px);
+  aspect-ratio: 5 / 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.deity-aura {
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 140, 26, 0.35) 0%, rgba(255, 140, 26, 0.12) 45%, transparent 72%);
+  filter: blur(6px);
+  animation: auraPulse 5s ease-in-out infinite;
+}
+
+.deity-rays {
+  position: absolute;
+  inset: -8%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 215, 122, 0.16) 0deg 3deg, transparent 3deg 18deg);
+  animation: slowSpin 60s linear infinite;
+  opacity: 0.6;
+}
+
+.deity-emblem {
+  position: relative;
+  width: 82%;
+  filter: drop-shadow(0 0 26px rgba(255, 140, 26, 0.45));
+}
+
+.emblem-svg { width: 100%; height: auto; }
+.emblem-om { font-family: var(--font-body); }
+
+.deity-floor-glow {
+  position: absolute;
+  bottom: -6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 14%;
+  background: radial-gradient(ellipse, rgba(255, 140, 26, 0.45) 0%, transparent 75%);
+  filter: blur(10px);
+}
+
+.sanskrit-float {
+  margin-top: 1.1rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--gold-bright);
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  opacity: 0.9;
+  animation: gentleFloat 6s ease-in-out infinite;
+}
+.sanskrit-float .dot { color: var(--saffron); opacity: 0.6; }
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 8vw, 4.6rem);
+  letter-spacing: 0.04em;
+  margin-top: 1.1rem;
+  color: var(--ivory);
+  text-shadow: 0 0 30px rgba(255, 140, 26, 0.35);
+}
+
+.hero-title span {
+  display: block;
+  background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold) 45%, var(--saffron) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-subtitle {
+  margin-top: 0.9rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: clamp(0.75rem, 2.4vw, 0.95rem);
+  color: var(--ivory-dim);
+}
+
+.hero-tagline {
+  margin-top: 0.6rem;
+  font-style: italic;
+  color: var(--saffron-soft);
+  font-size: clamp(0.85rem, 2.6vw, 1rem);
+  opacity: 0.85;
+}
+
+/* ---------- 5. COIN ---------- */
+.coin-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.25rem 1rem;
+}
+
+.coin-stage {
+  position: relative;
+  width: min(52vw, 220px);
+  aspect-ratio: 1 / 1;
+  perspective: 1200px;
+  margin-bottom: 2.25rem;
+}
+
+.coin-glow {
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 122, 0.35) 0%, transparent 70%);
+  animation: coinGlowPulse 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.coin {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  animation: coinIdle 4.5s ease-in-out infinite;
+}
+
+.coin:focus-visible { outline-offset: 8px; }
+
+.coin-inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.2s linear;
+}
+
+.coin-inner.flipping {
+  animation: coinFlip 1.9s var(--ease-cinematic) forwards;
+}
+
+.coin-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  box-shadow:
+    0 0 0 2px rgba(92, 58, 12, 0.6),
+    0 18px 40px rgba(0, 0, 0, 0.55),
+    inset 0 2px 6px rgba(255, 255, 255, 0.35);
+  overflow: hidden;
+}
+
+.coin-front { transform: rotateY(0deg) translateZ(1px); }
+.coin-back { transform: rotateY(180deg) translateZ(1px); }
+
+.coin-svg { width: 100%; height: 100%; }
+.coin-text { font-family: var(--font-body); font-weight: 600; }
+
+.coin-edge {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transform: translateZ(-1px) scale(0.985);
+  background: repeating-linear-gradient(
+    90deg,
+    #b9852a 0px, #7a5313 2px, #e8b23d 4px, #7a5313 6px
+  );
+  filter: brightness(0.75);
+}
+
+/* ---------- 6. TOSS BUTTON ---------- */
+.toss-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1rem 2.2rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(0.85rem, 2.6vw, 1rem);
+  letter-spacing: 0.14em;
+  color: var(--bg-black);
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold) 55%, var(--saffron) 100%);
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 1px rgba(255, 215, 122, 0.5),
+    0 12px 30px rgba(255, 140, 26, 0.25);
+  transition: transform 0.25s var(--ease-snap), box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.toss-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(255, 215, 122, 0.7),
+    0 16px 38px rgba(255, 140, 26, 0.4);
+  filter: brightness(1.06);
+}
+
+.toss-btn:active:not(:disabled) {
+  transform: translateY(0px) scale(0.97);
+}
+
+.toss-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(0.3);
+}
+
+.toss-btn-glyph { opacity: 0.8; }
+
+/* ---------- 7. RESULT CARD ---------- */
+.result-card {
+  margin-top: 2.2rem;
+  min-height: 90px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+  filter: blur(6px);
+  transition: opacity 0.55s var(--ease-cinematic), transform 0.55s var(--ease-cinematic), filter 0.55s var(--ease-cinematic);
+}
+
+.result-card.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.result-word {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  background: linear-gradient(135deg, var(--gold-bright), var(--saffron));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 40px rgba(255, 140, 26, 0.4);
+}
+
+.result-message {
+  margin-top: 0.5rem;
+  font-style: italic;
+  color: var(--ivory-dim);
+  font-size: clamp(0.9rem, 2.6vw, 1.05rem);
+}
+
+/* ---------- 8. STATISTICS ---------- */
+.stats-section {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+.stats-panel {
+  width: 100%;
+  max-width: 640px;
+  background: linear-gradient(180deg, rgba(28, 19, 13, 0.7), rgba(10, 7, 5, 0.75));
+  border: 1px solid var(--line-gold);
+  border-radius: 20px;
+  padding: 1.6rem 1.4rem 1.8rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+
+.stats-header h2 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--gold-bright);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.reset-btn {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  color: var(--ivory-dim);
+  border: 1px solid var(--line-gold);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.reset-btn:hover {
+  color: var(--gold-bright);
+  border-color: var(--gold);
+  background: rgba(232, 178, 61, 0.08);
+}
+
+.reset-btn.pulsing { animation: resetPulse 0.4s ease; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line-gold);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stat-cell {
+  background: rgba(10, 7, 5, 0.85);
+  padding: 1rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.stat-cell--wide { grid-column: span 3; }
+
+.stat-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 3.4vw, 1.5rem);
+  font-weight: 600;
+  color: var(--gold-bright);
+  transition: transform 0.3s var(--ease-snap);
+}
+
+.stat-value.bump { animation: statBump 0.4s var(--ease-snap); }
+
+/* ---------- 9. FOOTER ---------- */
+.site-footer {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 2rem 1.25rem 2.5rem;
+  border-top: 1px solid var(--line-gold);
+}
+
+.footer-line-main {
+  font-family: var(--font-display);
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  font-size: 0.95rem;
+}
+
+.footer-line-sub {
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--ivory-dim);
+  opacity: 0.7;
+}
+
+/* ---------- 10. ANIMATIONS ---------- */
+@keyframes auraPulse {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes slowSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes rayDrift {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.55; }
+}
+
+@keyframes coinIdle {
+  0%, 100% { transform: translateY(0) rotateZ(0deg); }
+  50% { transform: translateY(-8px) rotateZ(1.5deg); }
+}
+
+@keyframes coinGlowPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes resetPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+@keyframes statBump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes screenGlow {
+  0% { box-shadow: inset 0 0 0 rgba(255, 140, 26, 0); }
+  50% { box-shadow: inset 0 0 180px rgba(255, 140, 26, 0.18); }
+  100% { box-shadow: inset 0 0 0 rgba(255, 140, 26, 0); }
+}
+
+body.toss-active { animation: screenGlow 1.9s ease; }
+
+/* Coin flip landing states: driven via inline transform variable set by JS */
+@keyframes coinFlip {
+  0% { transform: rotateY(0deg) rotateX(0deg); }
+  100% { transform: var(--flip-target); }
+}
+
+/* ---------- 11. RESPONSIVE ---------- */
+@media (min-width: 640px) {
+  .deity-frame { width: min(50vw, 360px); }
+  .coin-stage { width: min(30vw, 240px); }
+}
+
+@media (min-width: 1024px) {
+  .hero { min-height: 100vh; padding-top: 2rem; }
+  .deity-frame { width: 380px; }
+  .coin-stage { width: 250px; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 380px) {
+  .hero-title { letter-spacing: 0.02em; }
+  .toss-btn { padding: 0.9rem 1.6rem; }
+}
+
+/* ---------- 12. REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .coin-inner.flipping { animation: none; }
+}

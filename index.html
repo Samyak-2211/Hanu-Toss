@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Hanuman Ji Toss — Strength, Courage, Devotion, Destiny</title>
+  <meta name="description" content="A devotional cinematic coin-toss experience inspired by Lord Hanuman Ji. Invoke courage. Let the toss decide." />
+
+  <!-- Google Fonts: Cinzel (carved-stone display) + Mukta (clean, Devanagari-capable body/UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Mukta:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="hstyle.css" />
+</head>
+<body>
+
+  <!-- ============ BACKGROUND LAYERS ============ -->
+  <div class="bg-layer bg-stone" aria-hidden="true"></div>
+  <div class="bg-layer bg-mandala" aria-hidden="true"></div>
+  <div class="bg-layer bg-vignette" aria-hidden="true"></div>
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+  <div class="light-rays" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ============ HEADER / NAV ============ -->
+  <header class="site-header">
+    <div class="mark" aria-hidden="true">卐</div>
+    <div class="mark-text">ॐ</div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO SECTION ============ -->
+    <section class="hero" id="hero">
+
+      <div class="deity-frame">
+        <div class="deity-aura" aria-hidden="true"></div>
+        <div class="deity-rays" aria-hidden="true"></div>
+
+        <!--
+          HANUMAN JI IMAGE / EMBLEM PLACEHOLDER
+          ---------------------------------------------------------
+          To use a real image of Hanuman Ji, replace the <div class="deity-emblem">...</div>
+          block below with:
+
+            <img src="YOUR-IMAGE-PATH.jpg" alt="Lord Hanuman Ji in a devotional, respectful pose" class="deity-image" />
+
+          Until then, a respectful symbolic emblem (gada, sacred flame, Om)
+          is rendered in pure SVG so the page works with zero external assets.
+        -->
+        <div class="deity-emblem" role="img" aria-label="Sacred emblem representing Lord Hanuman Ji: a divine gada encircled by flame and light">
+          <svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" class="emblem-svg">
+            <defs>
+              <radialGradient id="haloGrad" cx="50%" cy="42%" r="60%">
+                <stop offset="0%" stop-color="#ffd77a" stop-opacity="0.9"/>
+                <stop offset="55%" stop-color="#ff8c1a" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#ff8c1a" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="gadaGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fff3cf"/>
+                <stop offset="45%" stop-color="#e8b23d"/>
+                <stop offset="100%" stop-color="#8a5a12"/>
+              </linearGradient>
+              <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#7a1220"/>
+                <stop offset="55%" stop-color="#ff5b1f"/>
+                <stop offset="100%" stop-color="#ffd77a"/>
+              </linearGradient>
+            </defs>
+
+            <circle cx="200" cy="220" r="190" fill="url(#haloGrad)"/>
+
+            <!-- Ornamental temple arch -->
+            <path d="M60 420 Q60 140 200 90 Q340 140 340 420" fill="none" stroke="#caa24a" stroke-width="2" opacity="0.5"/>
+
+            <!-- Sacred flame (Prana / divine energy) -->
+            <path d="M200 120 C165 175 165 220 200 255 C235 220 235 175 200 120 Z" fill="url(#flameGrad)" opacity="0.95"/>
+            <path d="M200 165 C182 195 182 218 200 238 C218 218 218 195 200 165 Z" fill="#ffd77a" opacity="0.85"/>
+
+            <!-- Divine Gada (mace) -->
+            <g>
+              <rect x="192" y="250" width="16" height="150" rx="6" fill="url(#gadaGold)" stroke="#5c3a0c" stroke-width="1.5"/>
+              <circle cx="200" cy="255" r="46" fill="url(#gadaGold)" stroke="#5c3a0c" stroke-width="2"/>
+              <circle cx="200" cy="255" r="30" fill="none" stroke="#5c3a0c" stroke-width="1.5" opacity="0.6"/>
+              <circle cx="200" cy="255" r="16" fill="#fff3cf" opacity="0.9"/>
+              <!-- studs -->
+              <circle cx="200" cy="209" r="5" fill="#fff3cf"/>
+              <circle cx="200" cy="301" r="5" fill="#fff3cf"/>
+              <circle cx="246" cy="255" r="5" fill="#fff3cf"/>
+              <circle cx="154" cy="255" r="5" fill="#fff3cf"/>
+              <circle cx="232" cy="223" r="4.5" fill="#fff3cf"/>
+              <circle cx="168" cy="223" r="4.5" fill="#fff3cf"/>
+              <circle cx="232" cy="287" r="4.5" fill="#fff3cf"/>
+              <circle cx="168" cy="287" r="4.5" fill="#fff3cf"/>
+              <rect x="184" y="392" width="32" height="14" rx="4" fill="url(#gadaGold)" stroke="#5c3a0c" stroke-width="1.5"/>
+            </g>
+
+            <!-- Devanagari Om, subtle, above the flame -->
+            <text x="200" y="95" text-anchor="middle" class="emblem-om" font-size="34" fill="#ffe6ad" opacity="0.9">ॐ</text>
+          </svg>
+        </div>
+
+        <div class="deity-floor-glow" aria-hidden="true"></div>
+      </div>
+
+      <div class="sanskrit-float" aria-hidden="true">
+        <span>श्री राम</span>
+        <span class="dot">•</span>
+        <span>ॐ हनुमते नमः</span>
+      </div>
+
+      <h1 class="hero-title">HANUMAN JI <span>TOSS</span></h1>
+      <p class="hero-subtitle">Strength · Courage · Devotion · Destiny</p>
+      <p class="hero-tagline">Let divine courage guide the toss.</p>
+
+    </section>
+
+    <!-- ============ COIN SECTION ============ -->
+    <section class="coin-section" aria-label="Divine coin toss">
+
+      <div class="coin-stage">
+        <div class="coin-glow" aria-hidden="true"></div>
+
+        <button
+          id="coin"
+          class="coin"
+          type="button"
+          aria-live="polite"
+          aria-label="Golden divine coin, currently showing heads. Press the toss button below to flip."
+        >
+          <div class="coin-inner" id="coinInner">
+            <!-- HEADS FACE -->
+            <div class="coin-face coin-front">
+              <svg viewBox="0 0 200 200" class="coin-svg">
+                <defs>
+                  <radialGradient id="coinFrontGrad" cx="35%" cy="30%" r="75%">
+                    <stop offset="0%" stop-color="#fff6d8"/>
+                    <stop offset="45%" stop-color="#f0c563"/>
+                    <stop offset="80%" stop-color="#b9852a"/>
+                    <stop offset="100%" stop-color="#7a5313"/>
+                  </radialGradient>
+                </defs>
+                <circle cx="100" cy="100" r="96" fill="url(#coinFrontGrad)" stroke="#5c3a0c" stroke-width="3"/>
+                <circle cx="100" cy="100" r="84" fill="none" stroke="#7a5313" stroke-width="1.5" opacity="0.6"/>
+                <circle cx="100" cy="100" r="78" fill="none" stroke="#fff6d8" stroke-width="1" opacity="0.5"/>
+                <!-- ornamental dots ring -->
+                <g fill="#5c3a0c" opacity="0.55">
+                  <circle cx="100" cy="20" r="2.4"/><circle cx="149" cy="34" r="2.4"/><circle cx="180" cy="75" r="2.4"/>
+                  <circle cx="180" cy="125" r="2.4"/><circle cx="149" cy="166" r="2.4"/><circle cx="100" cy="180" r="2.4"/>
+                  <circle cx="51" cy="166" r="2.4"/><circle cx="20" cy="125" r="2.4"/><circle cx="20" cy="75" r="2.4"/>
+                  <circle cx="51" cy="34" r="2.4"/>
+                </g>
+                <!-- central sacred flame + gada motif, simplified for coin scale -->
+                <path d="M100 58 C82 88 82 108 100 124 C118 108 118 88 100 58 Z" fill="#7a1220"/>
+                <rect x="94" y="120" width="12" height="42" rx="4" fill="#5c3a0c"/>
+                <circle cx="100" cy="122" r="14" fill="#5c3a0c"/>
+                <circle cx="100" cy="122" r="6" fill="#fff6d8"/>
+                <text x="100" y="46" text-anchor="middle" font-size="16" fill="#5c3a0c" class="coin-text">श्री राम</text>
+                <text x="100" y="176" text-anchor="middle" font-size="10" letter-spacing="2" fill="#5c3a0c" class="coin-text">HEADS</text>
+              </svg>
+            </div>
+
+            <!-- TAILS FACE -->
+            <div class="coin-face coin-back">
+              <svg viewBox="0 0 200 200" class="coin-svg">
+                <defs>
+                  <radialGradient id="coinBackGrad" cx="65%" cy="30%" r="75%">
+                    <stop offset="0%" stop-color="#fff6d8"/>
+                    <stop offset="45%" stop-color="#e8b23d"/>
+                    <stop offset="80%" stop-color="#a97324"/>
+                    <stop offset="100%" stop-color="#6e480f"/>
+                  </radialGradient>
+                </defs>
+                <circle cx="100" cy="100" r="96" fill="url(#coinBackGrad)" stroke="#5c3a0c" stroke-width="3"/>
+                <circle cx="100" cy="100" r="84" fill="none" stroke="#7a5313" stroke-width="1.5" opacity="0.6"/>
+                <circle cx="100" cy="100" r="78" fill="none" stroke="#fff6d8" stroke-width="1" opacity="0.5"/>
+                <g fill="#5c3a0c" opacity="0.55">
+                  <circle cx="100" cy="20" r="2.4"/><circle cx="149" cy="34" r="2.4"/><circle cx="180" cy="75" r="2.4"/>
+                  <circle cx="180" cy="125" r="2.4"/><circle cx="149" cy="166" r="2.4"/><circle cx="100" cy="180" r="2.4"/>
+                  <circle cx="51" cy="166" r="2.4"/><circle cx="20" cy="125" r="2.4"/><circle cx="20" cy="75" r="2.4"/>
+                  <circle cx="51" cy="34" r="2.4"/>
+                </g>
+                <text x="100" y="112" text-anchor="middle" font-size="46" fill="#5c3a0c" class="coin-text">ॐ</text>
+                <text x="100" y="46" text-anchor="middle" font-size="14" letter-spacing="2" fill="#5c3a0c" class="coin-text">जय बजरंग बली</text>
+                <text x="100" y="176" text-anchor="middle" font-size="10" letter-spacing="2" fill="#5c3a0c" class="coin-text">TAILS</text>
+              </svg>
+            </div>
+
+            <!-- EDGE for 3D thickness -->
+            <div class="coin-edge" aria-hidden="true"></div>
+          </div>
+        </button>
+      </div>
+
+      <button id="tossBtn" class="toss-btn" type="button">
+        <span class="toss-btn-glyph">✦</span>
+        <span id="tossBtnLabel">TOSS THE DIVINE COIN</span>
+        <span class="toss-btn-glyph">✦</span>
+      </button>
+
+      <!-- Result card -->
+      <div id="resultCard" class="result-card" aria-live="assertive">
+        <p class="result-word" id="resultWord">&nbsp;</p>
+        <p class="result-message" id="resultMessage">&nbsp;</p>
+      </div>
+
+    </section>
+
+    <!-- ============ STATISTICS SECTION ============ -->
+    <section class="stats-section" aria-label="Toss statistics">
+      <div class="stats-panel">
+        <div class="stats-header">
+          <h2>Record of Tosses</h2>
+          <button id="resetBtn" class="reset-btn" type="button" aria-label="Reset all statistics">Reset</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-cell">
+            <span class="stat-label">Total Tosses</span>
+            <span class="stat-value" id="statTotal">0</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-label">Heads</span>
+            <span class="stat-value" id="statHeads">0</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-label">Tails</span>
+            <span class="stat-value" id="statTails">0</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-label">Heads Rate</span>
+            <span class="stat-value" id="statHeadsRate">0%</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-label">Tails Rate</span>
+            <span class="stat-value" id="statTailsRate">0%</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-label">Current Streak</span>
+            <span class="stat-value" id="statStreak">0</span>
+          </div>
+          <div class="stat-cell stat-cell--wide">
+            <span class="stat-label">Longest Streak</span>
+            <span class="stat-value" id="statLongest">0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <p class="footer-line-main">जय बजरंग बली • श्री राम</p>
+    <p class="footer-line-sub">Built with devotion, courage &amp; code.</p>
+  </footer>
+
+  <script src="hscript.js"></script>
+</body>
+</html>
